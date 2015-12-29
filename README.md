@@ -11,7 +11,7 @@ Getting started
 1. Install Opauth-Google:
    ```bash
    cd path/to/app/root
-   composer require opauth/google:dev-wip/1.0
+   composer require claromentis/opauth-google:1.x
    ```
 
 2. Create a Google APIs project at https://code.google.com/apis/console/
