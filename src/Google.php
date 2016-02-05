@@ -60,6 +60,7 @@ class Google extends AbstractStrategy
     {
         $url = 'https://accounts.google.com/o/oauth2/auth';
         $params = array(
+            'access_type' => 'offline',
             'client_id' => $this->strategy['client_id'],
             'redirect_uri' => $this->callbackUrl(),
             'response_type' => 'code',
@@ -80,6 +81,7 @@ class Google extends AbstractStrategy
         }
 
         $response = $this->accessToken($_GET['code']);
+        $originalResponseString = $response;
         $results = json_decode($response);
 
         if (empty($results->access_token)) {
@@ -98,7 +100,8 @@ class Google extends AbstractStrategy
         $response = $this->response($userinfo);
         $response->credentials = array(
             'token' => $results->access_token,
-            'expires' => date('c', time() + $results->expires_in)
+            'expires' => date('c', time() + $results->expires_in),
+            'response' => $originalResponseString,
         );
         if (!empty($results->refresh_token)) {
             $response->credentials['refresh_token'] = $results->refresh_token;
